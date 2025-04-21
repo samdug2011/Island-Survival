@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://coxas416rf2k0"]
+
+[ext_resource type="PackedScene" uid="uid://ompb16nixyvd" path="res://Meshes/mango_tree_fbx/scene.gltf" id="1_7kom5"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5d23l"]
+radius = 18.1099
+
+[node name="Area3D" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_5d23l")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_7kom5")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)

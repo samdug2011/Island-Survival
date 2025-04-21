@@ -1,0 +1,51 @@
+[gd_scene load_steps=10 format=3 uid="uid://geu3jscqe8x4"]
+
+[ext_resource type="Script" path="res://Scripts/world_collision.gd" id="2_b31jj"]
+[ext_resource type="Script" path="res://Scripts/world_mesh.gd" id="3_37ijv"]
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_ovwal"]
+
+[sub_resource type="Gradient" id="Gradient_xy4ig"]
+offsets = PackedFloat32Array(0, 0.313889, 0.5, 0.630556, 0.686111, 0.766667, 0.830556, 0.930556, 0.988889, 1)
+colors = PackedColorArray(0, 0, 1, 1, 0.164706, 0.772549, 0.494118, 1, 0.962599, 0.989816, 0.336787, 1, 1, 1, 0.329412, 1, 0, 0.835294, 0, 1, 0.0274049, 0.727336, 0.0298962, 1, 0.103529, 0.427451, 0.112941, 1, 0.129412, 0.32549, 0.141176, 1, 0.647059, 0.25098, 0, 1, 1, 1, 1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_shdgk"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_jbiq0"]
+fractal_type = 2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0wf6h"]
+albedo_color = Color(0, 0.278431, 1, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jnnvc"]
+material = SubResource("StandardMaterial3D_0wf6h")
+size = Vector2(1000, 1000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uuwgu"]
+size = Vector3(200, 8, 200)
+
+[node name="Chunk" type="StaticBody3D"]
+
+[node name="WorldCollision" type="CollisionShape3D" parent="."]
+script = ExtResource("2_b31jj")
+
+[node name="WorldMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("ArrayMesh_ovwal")
+script = ExtResource("3_37ijv")
+color = SubResource("Gradient_xy4ig")
+height_scale = 1.5
+fnl = SubResource("FastNoiseLite_shdgk")
+river_fnl = SubResource("FastNoiseLite_jbiq0")
+
+[node name="WaterArea" type="Area3D" parent="."]
+collision_layer = 6
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="WaterArea"]
+mesh = SubResource("PlaneMesh_jnnvc")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WaterArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10.3054, 0)
+shape = SubResource("BoxShape3D_uuwgu")
+
+[connection signal="collision_changed" from="WorldMesh" to="WorldCollision" method="_on_world_mesh_collision_changed"]

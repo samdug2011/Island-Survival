@@ -1,0 +1,55 @@
+[gd_scene load_steps=11 format=3 uid="uid://dh1xaj1ofh3m4"]
+
+[ext_resource type="PackedScene" uid="uid://da8brua6b568n" path="res://Scenes/hud.tscn" id="1_aa27g"]
+[ext_resource type="Script" path="res://Scripts/infinite_world.gd" id="1_ikx4s"]
+[ext_resource type="PackedScene" uid="uid://b48ll7fkcns5b" path="res://Scenes/player.tscn" id="2_cwdmg"]
+[ext_resource type="PackedScene" uid="uid://geu3jscqe8x4" path="res://Scenes/chunk.tscn" id="3_2apae"]
+[ext_resource type="Script" path="res://addons/maaacks_game_template/base/scripts/pause_menu_controller.gd" id="5_ti8yy"]
+[ext_resource type="PackedScene" uid="uid://cnmu4k37qncn8" path="res://addons/maaacks_game_template/examples/scenes/overlaid_menus/pause_menu.tscn" id="6_wluld"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_q0hdg"]
+sky_top_color = Color(0.274369, 0.459557, 0.848377, 1)
+sky_horizon_color = Color(0.814725, 0.611788, 0.360632, 1)
+
+[sub_resource type="Sky" id="Sky_7hons"]
+sky_material = SubResource("ProceduralSkyMaterial_q0hdg")
+
+[sub_resource type="Environment" id="Environment_hxw4l"]
+background_mode = 2
+sky = SubResource("Sky_7hons")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_leltw"]
+height = 0.1
+
+[node name="InfiniteWorld" type="Node3D"]
+script = ExtResource("1_ikx4s")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.939693, 0.34202, 0, -0.34202, -0.939693, 0, 1000, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_hxw4l")
+
+[node name="HUD" parent="." instance=ExtResource("1_aa27g")]
+
+[node name="Player" parent="." instance=ExtResource("2_cwdmg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+gravity = -5
+
+[node name="Marker" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_leltw")
+skeleton = NodePath("")
+
+[node name="Chunk" parent="." instance=ExtResource("3_2apae")]
+
+[node name="WorldMesh" parent="Chunk" index="1"]
+height_scale = 1.0
+
+[node name="PauseMenuController" type="Node" parent="."]
+script = ExtResource("5_ti8yy")
+pause_menu_packed = ExtResource("6_wluld")
+
+[connection signal="generate_world" from="HUD" to="Chunk/WorldMesh" method="generate_world"]
+[connection signal="body_entered" from="Chunk/WaterArea" to="." method="_on_water_area_body_entered"]
+
+[editable path="Chunk"]

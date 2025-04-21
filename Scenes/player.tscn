@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://b48ll7fkcns5b"]
+
+[ext_resource type="Script" path="res://Scripts/player.gd" id="1_wrvx0"]
+[ext_resource type="Script" path="res://Scripts/player_camera.gd" id="2_slh6s"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lcvls"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_malqw"]
+size = Vector3(1, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_f6d4j"]
+
+[node name="Player" type="CharacterBody3D"]
+floor_block_on_wall = false
+floor_max_angle = 1.309
+script = ExtResource("1_wrvx0")
+gravity = -20
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_lcvls")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+shape = SubResource("BoxShape3D_malqw")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_f6d4j")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 16, 0)
+top_level = true
+script = ExtResource("2_slh6s")

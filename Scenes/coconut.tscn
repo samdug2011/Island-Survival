@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bdaxfbs0xly3a"]
+
+[ext_resource type="PackedScene" uid="uid://q6m6xg6i7vfq" path="res://Meshes/coconut_palm/scene.gltf" id="1_6it7y"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5d23l"]
+radius = 18.1099
+
+[node name="Area3D" type="Area3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_5d23l")
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_6it7y")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0)
